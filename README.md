@@ -8,3 +8,16 @@ We Will add more kyc documents later.
 npm install react-native-kyc-sdk or yarn add react-native-kyc-sdk
 
 ## How to use
+
+`import React from 'react';
+import Verification from 'react-native-kyc-sdk';
+
+const App = () => {
+return(
+<Verification sequence={
+["Pan card",
+"Aadhaar card"
+]} />
+)
+}
+export default App;`
