@@ -1,4 +1,4 @@
-This Library build for kyc verification sdk. you can use this library for verification for PAN Card and Aadhaar Card.
+This Library build for kyc verification. you can use this library for verification for PAN Card and Aadhaar Card.
 We Will add more kyc documents later.
 
 ## Installation
