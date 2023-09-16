@@ -91,7 +91,7 @@ const Identity: FunctionComponent<Props> = ({
         });
         const response = await request.json();
         if (request.status === 400) {
-          setPanError(response.error.reason.message);
+          setPanError(response.message);
         } else if (request.status === 403) {
           setPanError("Data not found");
         } else if (request.status === 422) {
@@ -108,10 +108,12 @@ const Identity: FunctionComponent<Props> = ({
           setTimeout(() => {
             setSuccess(false);
             setSuccessMessage("");
-            flatListRef.current?.scrollToIndex({
-              index: index + 1,
-              animated: true,
-            });
+            if (sequence?.length !== index + 1) {
+              flatListRef.current?.scrollToIndex({
+                index: index + 1,
+                animated: true,
+              });
+            }
           }, 3000);
         }
         setLoading(false);
@@ -130,7 +132,7 @@ const Identity: FunctionComponent<Props> = ({
     setLoading(true);
     if (aadhaarNumber) {
       try {
-        const request = await fetch(PANURL, {
+        const request = await fetch(AadhaarURL, {
           headers: header,
           method: "POST",
           body: JSON.stringify({ aadhaarNumber: aadhaarNumber, consent: "Y" }),
@@ -156,6 +158,12 @@ const Identity: FunctionComponent<Props> = ({
           setTimeout(() => {
             setSuccess(false);
             setSuccessMessage("");
+            if (sequence?.length !== index + 1) {
+              flatListRef.current?.scrollToIndex({
+                index: index + 1,
+                animated: true,
+              });
+            }
           }, 3000);
         }
         setLoading(false);
