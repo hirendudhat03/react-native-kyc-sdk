@@ -1,6 +1,6 @@
 {
   "name": "react-native-kyc-sdk",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "React Native KYC Verification SDK",
   "main": "src/index.tsx",
   "scripts": {
