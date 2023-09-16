@@ -10,11 +10,11 @@ We Will add more kyc documents later.
 ## Installation
 
 ```sh
-yarn add react-native-vision-camera
+yarn add react-native-kyc-sdk
 ```
 
 ```sh
-npm install react-native-vision-camera
+npm install react-native-kyc-sdk
 ```
 
 ## How to use
