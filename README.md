@@ -3,20 +3,22 @@ We Will add more kyc documents later.
 
 ## Installation
 
-`npm install react-native-kyc-sdk`
-or
-`yarn add react-native-kyc-sdk`
+```sh
+yarn add react-native-vision-camera
+```
+
+```sh
+npm install react-native-vision-camera
+```
 
 ## How to use
 
-```
-import React from 'react';
-import Verification from 'react-native-kyc-sdk';
+```tsx
+import React from "react";
+import Verification from "react-native-kyc-sdk";
 
-const App = () => {
-return(
-        <Verification sequence={["Pan card", "Aadhaar card"]} />
-    )
+function App() {
+  return <Verification sequence={["Pan card", "Aadhaar card"]} />;
 }
 export default App;
 ```
