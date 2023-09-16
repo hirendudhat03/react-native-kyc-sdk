@@ -24,7 +24,13 @@ import React from "react";
 import Verification from "react-native-kyc-sdk";
 
 function App() {
-  return <Verification sequence={["Pan card", "Aadhaar card"]} />;
+  return (
+    <Verification
+      sequence={["Pan card", "Aadhaar card"]}
+      panResponse={(val) => console.log(val)}
+      aadhaarResponse={(val) => console.log(val)}
+    />
+  );
 }
 export default App;
 ```

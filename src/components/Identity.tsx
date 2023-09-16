@@ -38,6 +38,8 @@ type Props = {
   inputAadhaarTitle?: string;
   verifyPANButtonTitle?: string;
   verifyAadhaarButtonTitle?: string;
+  aadhaarResponse: (val: any) => void;
+  panResponse: (val: any) => void;
 };
 
 const { width, height } = Dimensions.get("window");
@@ -69,6 +71,8 @@ const Identity: FunctionComponent<Props> = ({
   buttonTitleStyle,
   verifyPANButtonTitle,
   verifyAadhaarButtonTitle,
+  aadhaarResponse,
+  panResponse,
 }) => {
   const [panError, setPanError] = useState<string>("");
   const [aadhaarError, setAadhaarError] = useState<string>("");
@@ -91,7 +95,7 @@ const Identity: FunctionComponent<Props> = ({
         });
         const response = await request.json();
         if (request.status === 400) {
-          setPanError(response.message);
+          setPanError(response.error.reason.message);
         } else if (request.status === 403) {
           setPanError("Data not found");
         } else if (request.status === 422) {
@@ -115,6 +119,7 @@ const Identity: FunctionComponent<Props> = ({
               });
             }
           }, 3000);
+          panResponse(response?.result?.data?.panData);
         }
         setLoading(false);
       } catch (err) {
@@ -139,19 +144,19 @@ const Identity: FunctionComponent<Props> = ({
         });
         const response = await request.json();
         if (request.status === 400) {
-          setPanError(response.error.reason.message);
+          setAadhaarError(response?.message || response?.error);
         } else if (request.status === 401) {
-          setPanError("Invalid credentials");
+          setAadhaarError("Invalid credentials");
         } else if (request.status === 403) {
-          setPanError("Access Denied");
+          setAadhaarError("Access Denied");
         } else if (request.status === 422) {
-          setPanError("Invalid Aadhaar pattern");
+          setAadhaarError("Invalid Aadhaar pattern");
         } else if (request.status === 500) {
-          setPanError("Internal Server Error");
+          setAadhaarError("Internal Server Error");
         } else if (request.status === 503) {
-          setPanError("Service Unavailable");
+          setAadhaarError("Service Unavailable");
         } else if (request.status === 504) {
-          setPanError("The request has timed out. Please try again.");
+          setAadhaarError("The request has timed out. Please try again.");
         } else if (request.status === 200) {
           setSuccess(true);
           setSuccessMessage("Aadhaar Verified Successfully.");
@@ -165,6 +170,7 @@ const Identity: FunctionComponent<Props> = ({
               });
             }
           }, 3000);
+          aadhaarResponse(response?.result);
         }
         setLoading(false);
       } catch (err) {

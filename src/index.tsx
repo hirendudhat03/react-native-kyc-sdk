@@ -122,6 +122,14 @@ export type Props = {
    * This title for verify screen Aadhaar Button Title
    **/
   verifyAadhaarButtonTitle?: string;
+  /**
+   * This response is verify screen Aadhaar card Response
+   **/
+  aadhaarResponse: (val: any) => void;
+  /**
+   * This response is verify screen Pan card Response
+   **/
+  panResponse: (val: any) => void;
 };
 
 const Verification: FunctionComponent<Props> = (props) => {
@@ -166,6 +174,8 @@ const Verification: FunctionComponent<Props> = (props) => {
           verifyAadhaarButtonTitle={props.verifyAadhaarButtonTitle}
           errorMessageStyle={props.errorMessageStyle}
           buttonStyle={props.onBoardingButtonStyle}
+          aadhaarResponse={(val) => props.aadhaarResponse(val)}
+          panResponse={(val) => props.panResponse(val)}
         />
       )}
     </SafeAreaView>
