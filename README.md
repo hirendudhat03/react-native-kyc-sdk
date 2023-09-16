@@ -5,9 +5,9 @@ We Will add more kyc documents later.
 
 ## Installation
 
-`npm install react-native-kyc-sdk`
+```npm install react-native-kyc-sdk```
 or
-`yarn add react-native-kyc-sdk`
+```yarn add react-native-kyc-sdk```
 
 ## How to use
 
