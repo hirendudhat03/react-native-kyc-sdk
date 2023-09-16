@@ -4,7 +4,7 @@ import {
   Dimensions,
   FlatList,
   Image,
-  ImageProps,
+  ImageSourcePropType,
   ImageStyle,
   Modal,
   StyleProp,
@@ -23,9 +23,8 @@ import { Fonts } from "../helper/Fonts";
 type Props = {
   backPress: (val: number) => void;
   sequence: string[] | undefined;
-  panResponse?: (val: object) => void;
   successModalViewStyle?: StyleProp<ViewStyle>;
-  successIcon?: ImageProps;
+  successIcon?: ImageSourcePropType;
   successMessageStyle?: StyleProp<TextStyle>;
   successIconStyle?: StyleProp<ImageStyle>;
   verifyContainerStyle?: StyleProp<ViewStyle>;
@@ -44,6 +43,7 @@ type Props = {
 const { width, height } = Dimensions.get("window");
 
 const PANURL = "https://ind.thomas.hyperverge.co/v1/fetchPANDetailed";
+const AadhaarURL = "https://ind.thomas.hyperverge.co/v1/verifyAadhaar";
 const header = {
   "content-type": "application/json",
   appId: "1dp8mf",
@@ -54,7 +54,6 @@ const header = {
 const Identity: FunctionComponent<Props> = ({
   backPress,
   sequence,
-  panResponse,
   successModalViewStyle,
   successIcon,
   successMessageStyle,
@@ -73,8 +72,8 @@ const Identity: FunctionComponent<Props> = ({
 }) => {
   const [panError, setPanError] = useState<string>("");
   const [aadhaarError, setAadhaarError] = useState<string>("");
-  //   const [drivingError, setDrivingError] = useState<string>("");
   const [panNumber, setPanNumber] = useState<string>("");
+  const [aadhaarNumber, setAadhaarNumber] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string>("");
@@ -91,7 +90,6 @@ const Identity: FunctionComponent<Props> = ({
           body: JSON.stringify({ pan: panNumber }),
         });
         const response = await request.json();
-        panResponse(response);
         if (request.status === 400) {
           setPanError(response.error.reason.message);
         } else if (request.status === 403) {
@@ -125,6 +123,50 @@ const Identity: FunctionComponent<Props> = ({
     } else {
       setLoading(false);
       setPanError("Enter PAN Number");
+    }
+  };
+
+  const verifyAadhaar = async (index: number) => {
+    setLoading(true);
+    if (aadhaarNumber) {
+      try {
+        const request = await fetch(PANURL, {
+          headers: header,
+          method: "POST",
+          body: JSON.stringify({ aadhaarNumber: aadhaarNumber, consent: "Y" }),
+        });
+        const response = await request.json();
+        if (request.status === 400) {
+          setPanError(response.error.reason.message);
+        } else if (request.status === 401) {
+          setPanError("Invalid credentials");
+        } else if (request.status === 403) {
+          setPanError("Access Denied");
+        } else if (request.status === 422) {
+          setPanError("Invalid Aadhaar pattern");
+        } else if (request.status === 500) {
+          setPanError("Internal Server Error");
+        } else if (request.status === 503) {
+          setPanError("Service Unavailable");
+        } else if (request.status === 504) {
+          setPanError("The request has timed out. Please try again.");
+        } else if (request.status === 200) {
+          setSuccess(true);
+          setSuccessMessage("Aadhaar Verified Successfully.");
+          setTimeout(() => {
+            setSuccess(false);
+            setSuccessMessage("");
+          }, 3000);
+        }
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+        setAadhaarError("Something went wrong! Please try again later.");
+        console.error(err);
+      }
+    } else {
+      setLoading(false);
+      setAadhaarError("Enter Aadhaar Number");
     }
   };
 
@@ -176,7 +218,10 @@ const Identity: FunctionComponent<Props> = ({
             <TextInput
               style={[styles.input, textInputStyle]}
               keyboardType="number-pad"
-              onChangeText={() => setAadhaarError("")}
+              onChangeText={(val) => {
+                setAadhaarError("");
+                setAadhaarNumber(val);
+              }}
             />
             {aadhaarError && (
               <Text style={[styles.errorStyle, errorMessageStyle]}>
@@ -185,7 +230,7 @@ const Identity: FunctionComponent<Props> = ({
             )}
             <TouchableOpacity
               style={[styles.button, buttonStyle]}
-              // onPress={() => verifyPAN(index)}
+              onPress={() => verifyAadhaar(index)}
               disabled={loading}
             >
               {loading ? (
@@ -198,22 +243,6 @@ const Identity: FunctionComponent<Props> = ({
             </TouchableOpacity>
           </View>
         )}
-        {/* {item === "Driving license" && (
-          <View style={styles.mainView}>
-            <Text style={styles.stepText}>STEP {index + 1}</Text>
-            <Text style={styles.title}>Enter Driving License</Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={() => setDrivingError("")}
-            />
-            {drivingError && (
-              <Text style={styles.errorStyle}>{drivingError}</Text>
-            )}
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.buttonText}>Verify Driving License</Text>
-            </TouchableOpacity>
-          </View>
-        )} */}
       </View>
     );
   };

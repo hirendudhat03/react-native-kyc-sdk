@@ -2,7 +2,7 @@ import React, { FunctionComponent, useCallback } from "react";
 import {
   FlatList,
   Image,
-  ImageProps,
+  ImageSourcePropType,
   ImageStyle,
   StyleProp,
   StyleSheet,
@@ -17,9 +17,9 @@ import { Colors } from "../helper/Colors";
 
 type Props = {
   sequence?: string[];
-  panIcon?: ImageProps;
-  aadhaarIcon?: ImageProps;
-  drivingIcon?: ImageProps;
+  panIcon?: ImageSourcePropType;
+  aadhaarIcon?: ImageSourcePropType;
+  drivingIcon?: ImageSourcePropType;
   iconStyle?: StyleProp<ImageStyle>;
   panTitle?: string;
   aadhaarTitle?: string;

@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from "react";
 import {
-  ImageProps,
+  ImageSourcePropType,
   ImageStyle,
   SafeAreaView,
   StyleProp,
@@ -25,15 +25,15 @@ export type Props = {
   /**
    * This Pan icon is onboarding screen Icon
    **/
-  panIcon?: ImageProps;
+  panIcon?: ImageSourcePropType;
   /**
    * This Pan icon is onboarding screen Icon
    **/
-  aadhaarIcon?: ImageProps;
+  aadhaarIcon?: ImageSourcePropType;
   /**
    * This Pan icon is onboarding screen Icon
    **/
-  drivingIcon?: ImageProps;
+  drivingIcon?: ImageSourcePropType;
   /**
    * This style for onboarding icon styles
    **/
@@ -77,7 +77,7 @@ export type Props = {
   /**
    * This response is get when verified PAN
    **/
-  panResponse?: (val: object) => void;
+  // panResponse?: (val: object) => void;
   /**
    * This style for success Modal View Style
    **/
@@ -85,7 +85,7 @@ export type Props = {
   /**
    * This Icon for success Modal Success Icon
    **/
-  successIcon?: ImageProps;
+  successIcon?: ImageSourcePropType;
   /**
    * This style for success Modal message
    **/
@@ -151,7 +151,6 @@ const Verification: FunctionComponent<Props> = (props) => {
         <Identity
           sequence={props.sequence}
           backPress={(val: number) => setCurrentScreen(val)}
-          panResponse={(val: object) => props.panResponse(val)}
           successModalViewStyle={props.successModalViewStyle}
           successIcon={props.successIcon}
           successMessageStyle={props.successMessageStyle}
